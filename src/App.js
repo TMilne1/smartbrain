@@ -1,19 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Logo from './Logo';
+import Navigation from './Navigation'
+import Rank from './Rank'
+//import facerecognition from '.FaceRecognition '
 import './App.css';
+import ImageLinkForm from './ImageLinkForm';
+import Particles from 'react-particles-js';
+
+const particleOptions = {
+  particles: {
+    number: {
+      value: 150,
+      density:{
+        enable: true,
+        value_area: 800
+      }
+    }
+  }
+}
+    
+
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <Particles className='particles'
+          params={particleOptions}
+        />
+        <Navigation/>
+        <Logo/>
+        <Rank/>
+        <ImageLinkForm/> 
+        
+        {//<FaceRecognition/>
+        }
       </div>
+      
     );
   }
 }
