@@ -5,7 +5,7 @@ import brain from './brain.png'
 
 const Logo=()=>{
     return (
-        <div>
+        <div className='ma4'>
             <Tilt className="Tilt br-2 shadow-2" options={{ max: 75 }} style={{ height: 150, width: 150 }}  >
                 <div className="Tilt-inner pa3"> 
                     <img className='pt2' alt='brain' src={brain}/> 
