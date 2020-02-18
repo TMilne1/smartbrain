@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import Logo from './Logo';
-import Navigation from './Navigation'
-import Rank from './Rank'
+import Logo from './Components/Logo/Logo';
+import Navigation from './Components/Navigation/Navigation'
+import Rank from './Components/Rank/Rank'
 import './App.css';
-import ImageLinkForm from './ImageLinkForm';
+import ImageLinkForm from './Components/ImagLinkForm/ImageLinkForm';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai'
-import FaceRecognition from './FaceRecognition'
+import FaceRecognition from './Components/FaceRecognition/FaceRecognition'
 
 const particleOptions = {
   particles: {
