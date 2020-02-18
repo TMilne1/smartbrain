@@ -31,34 +31,45 @@ class App extends Component {
     super();
     this.state={
       input:'',
-      image: ""
+      image: "",
+      boundingBox:{} 
     }
   }
 
-  onInputChange =(event)=>{
-   
-    this.setState({ input: event.target.value }, function () {
-      console.log(this.state.value)});
+  calculateFaceLocation=(data)=>{
+    
+    const boundingBoxForFace=data.outputs[0].data.regions[0].region_info.bounding_box
+    const image =  document.getElementById('uploadedPicture')
+    const width = Number(image.width)
+    const height = Number(image.height)
 
-    console.log(this.state.input)
+ 
+    return{
+      top: boundingBoxForFace.top_row * height,
+      bottom: height - (boundingBoxForFace.bottom_row * height),
+      left: boundingBoxForFace.left_col * width,
+      right: width -(boundingBoxForFace.right_col * width),
+    }
+    
+  }
+
+  displayFaceBox=(box)=>{
+    this.setState({boundingBox:box})
+  }
+
+  onInputChange=(event)=>{
+    this.setState({ input: event.target.value })
   }
 
   onButtonPress=()=>{
     this.setState({image:this.state.input})
-    //console.log("this is it:", this.state.image)
     //first input is the model ID - that ID is for Face Detection
-    console.log(this.state.image)
-    app.models.predict('a403429f2ddf4b49b307e318f00e528b', this.state.input).then(
-      function (response) {
-        // do something with response
-        console.log(response.outputs[0].data.regions[0].region_info.bounding_box)
-      },
-      function (err) {
-        // there was an error
-      }
-    );
-    
+    app.models.predict('a403429f2ddf4b49b307e318f00e528b', this.state.input)
+      .then((response)=>this.displayFaceBox(this.calculateFaceLocation(response)))
+      .catch(err=>console.log(err))
+  
   }
+
 
   render() {
     return (
@@ -70,8 +81,7 @@ class App extends Component {
         <Logo/>
         <Rank/>
         <ImageLinkForm onInputChange={this.onInputChange} onButtonPress={this.onButtonPress}/> 
-        
-        //<FaceRecognition InputImage={this.state.image}/>
+        <FaceRecognition box={this.state.boundingBox} InputImage={this.state.image}/>
         
       </div>
       
