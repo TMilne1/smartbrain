@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Logo from './Logo';
 import Navigation from './Navigation'
 import Rank from './Rank'
-//import facerecognition from '.FaceRecognition '
 import './App.css';
 import ImageLinkForm from './ImageLinkForm';
 import Particles from 'react-particles-js';
