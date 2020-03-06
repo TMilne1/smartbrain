@@ -35,7 +35,14 @@ class App extends Component {
       input:'',
       image: "",
       boundingBox:{}, 
-      route:'signIn'
+      route:'signIn',
+      user:{
+        id: "",
+        name: "",
+        email: "",
+        entries: "0",
+        joined: ""
+      }
     }
   }
 
@@ -44,7 +51,6 @@ class App extends Component {
     const image =  document.getElementById('uploadedPicture')
     const width = Number(image.width)
     const height = Number(image.height)
-
     return{
       top: boundingBoxForFace.top_row * height,
       bottom: height - (boundingBoxForFace.bottom_row * height),
@@ -64,18 +70,35 @@ class App extends Component {
       .catch(err=>console.log(err))
   }
 
-  onRouteChange=route=>{this.setState({route})}
+  onRouteChange=(route)=>{ 
+    this.setState({ route: route });  
+  }
+    
+  
+  
+  loadUser=(databaseUserInfo)=>{
+    this.setState({user: {
+        id: databaseUserInfo.id,
+        name: databaseUserInfo.name,
+        email: databaseUserInfo.email,
+        entries: databaseUserInfo.entries,
+        joined: databaseUserInfo.joined
+      }
+    })
+  }
 
 
   render() {
     return (
-      
-      <div>
-        <Particles className='particles'params={particleOptions}/>
-        <Navigation onRouteChange={this.onRouteChange} isSignedIn={this.state.route!=='signIn'} />
-
+      <div className="App">
+        <Particles className='particles'
+        params={particleOptions}
+        />
+        <Navigation onRouteChange={this.onRouteChange} isSignedIn={this.state.isSignedIn} />
+        
         {this.state.route === 'signIn' ?   
-          <div> <Logo/><SignIn onRouteChange={this.onRouteChange}></SignIn></div>
+          <div> <SignIn onRouteChange={this.onRouteChange}/></div>
+          
           :
           (
             this.state.route === 'home'? 
@@ -86,13 +109,12 @@ class App extends Component {
                 <FaceRecognition box={this.state.boundingBox} InputImage={this.state.image}/>
               </div>
               :
-              <div><Register onRouteChange={this.onRouteChange}/></div>
+              <div><Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/></div>
           ) 
- 
         }
       </div>
-      
-    );
+    )
+    
   }
 }
 
