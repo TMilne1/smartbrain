@@ -75,7 +75,7 @@ class Register extends Component {
                                 <input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
                                 type="password" 
                                 name="password" 
-                                autocomplet="password"
+                                autoComplete="password"
                                 id="password" 
                                  onChange={this.onPasswordChange}   
                                 />

@@ -32,6 +32,7 @@ class App extends Component {
   constructor(){
     super();
     this.state={
+      isSignedIn:false,
       input:'',
       image: "",
       boundingBox:{}, 
@@ -71,6 +72,9 @@ class App extends Component {
   }
 
   onRouteChange=(route)=>{ 
+    if (route === 'signIn' || route === 'register'){
+      this.setState({isSignedIn:false})
+    }
     this.setState({ route: route });  
   }
     
@@ -85,6 +89,8 @@ class App extends Component {
         joined: databaseUserInfo.joined
       }
     })
+    this.setState({isSignedIn:true})
+    
   }
 
 
@@ -97,14 +103,14 @@ class App extends Component {
         <Navigation onRouteChange={this.onRouteChange} isSignedIn={this.state.isSignedIn} />
         
         {this.state.route === 'signIn' ?   
-          <div> <SignIn onRouteChange={this.onRouteChange}/></div>
+          <div> <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser}/></div>
           
           :
           (
             this.state.route === 'home'? 
               <div>
                 <div><Logo/></div>
-                <Rank/>
+                <Rank name={this.state.user.name} entries={this.state.user.entries}/>
                 <ImageLinkForm onInputChange={this.onInputChange} onButtonPress={this.onButtonPress}/> 
                 <FaceRecognition box={this.state.boundingBox} InputImage={this.state.image}/>
               </div>

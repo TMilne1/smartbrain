@@ -23,9 +23,9 @@ class SignIn extends Component{
         })
             .then(resp => resp.json())
             .then(data => {
-                if(data==='success'){
+                if(data.id){
                     this.props.onRouteChange('home'); 
-                    
+                    this.props.loadUser(data)     
                 }
             })
         event.preventDefault()
@@ -80,7 +80,7 @@ class SignIn extends Component{
                          </form>
                      </main>
                 </article>
-                {console.log('end of signin')}
+                
             </div>
         )
     }
