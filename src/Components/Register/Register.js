@@ -15,7 +15,7 @@ class Register extends Component {
     onPasswordChange=(event) => {this.setState({registerPassword:event.target.value}) }
 
     onSubmitRegister=()=>{
-        fetch('http://localhost:3001/register', {
+        fetch('https://smart-brain-api-13.herokuapp.com/register', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -26,14 +26,11 @@ class Register extends Component {
         })
         .then(response => response.json())
         .then(user =>{
-            console.log(user)
-            if (user === 'That user is already registered'){
-                this.props.onRouteChange('register');
-            }else if (user === 'user not added'){
-                this.props.onRouteChange('register');
-            }else if(user){
-                this.props.loadUser(user)
+            if(user){
+                this.props.loadUser(user[0])
                 this.props.onRouteChange('home'); 
+            }else{
+                console.log('unable to register')
             }
 
         })

@@ -5,7 +5,7 @@ import Rank from './Components/Rank/Rank'
 import './App.css';
 import ImageLinkForm from './Components/ImagLinkForm/ImageLinkForm';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai'
+
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition'
 import SignIn from './Components/SignIn/SignIn'
 import Register from './Components/Register/Register'
@@ -22,29 +22,26 @@ const particleOptions = {
   }
 }
 
-const app = new Clarifai.App({
-  apiKey: 'cf236557d3864e529f2636a040175a08'
-});
-    
+const initialState = {
+  isSignedIn: false,
+  input: '',
+  image: "",
+  boundingBox: {},
+  route: 'signIn',
+  user: {
+    id: "",
+    name: "",
+    email: "",
+    entries: "0",
+    joined: ""
+  }
+}
 
 
 class App extends Component {
   constructor(){
     super();
-    this.state={
-      isSignedIn:false,
-      input:'',
-      image: "",
-      boundingBox:{}, 
-      route:'signIn',
-      user:{
-        id: "",
-        name: "",
-        email: "",
-        entries: "0",
-        joined: ""
-      }
-    }
+    this.state= initialState;
   }
 
   calculateFaceLocation=(data)=>{
@@ -66,10 +63,18 @@ class App extends Component {
   onButtonPress=()=>{
     this.setState({image:this.state.input})
     //first input is the model ID - that ID is for Face Detection
-    app.models.predict('a403429f2ddf4b49b307e318f00e528b', this.state.input)
+    fetch('https://smart-brain-api-13.herokuapp.com/imageURL', {
+      method: 'put',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        input: this.state.input
+      })
+    })
+      .catch(err => console.log('error using API'))
+      .then(response => response.json())
       .then((response)=>{
         if(response){
-          fetch('http://localhost:3001/image',{
+          fetch('https://smart-brain-api-13.herokuapp.com/image',{
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -80,10 +85,11 @@ class App extends Component {
           .then(entry => {
             this.setState(Object.assign(this.state.user, {entries:entry}))
           })
+          .catch(err=>console.log(err, 'error fetching image'))
         }
         this.displayFaceBox(this.calculateFaceLocation(response))
       })
-      .catch(err=>console.log(err))
+      .catch(err=>console.log('error'))
   }
 
   onRouteChange=(route)=>{ 
