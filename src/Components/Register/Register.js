@@ -14,27 +14,31 @@ class Register extends Component {
     onEmailChange=(event) => {this.setState({registerEmail:event.target.value}) }
     onPasswordChange=(event) => {this.setState({registerPassword:event.target.value}) }
 
-    onSubmitRegister=()=>{
-        fetch('https://smart-brain-api-13.herokuapp.com/register', {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: this.state.registerEmail,
-                password: this.state.registerPassword,
-                name: this.state.registerName
+    onSubmitRegister=(event)=>{
+        try{
+            fetch('https://smart-brain-api-13.herokuapp.com/register', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: this.state.registerEmail,
+                    password: this.state.registerPassword,
+                    name: this.state.registerName
+                })
             })
-        })
-        .then(response => response.json())
-        .then(user =>{
-            if(user){
-                this.props.loadUser(user[0])
-                this.props.onRouteChange('home'); 
-            }else{
-                console.log('unable to register')
-            }
+            .then(response => response.json())
+            .then(user =>{
+                if(user){
+                    this.props.loadUser(user[0])
+                    this.props.onRouteChange('home'); 
+                }else{
+                    console.log('unable to register')
+                }
 
-        })
-        event.preventDefault()
+            })
+            event.preventDefault();
+        }catch(err){
+            console.error(err)
+        }
     }
 
     

@@ -8,11 +8,11 @@ class SignIn extends Component{
             SignInPassword:""
         }
     }
-    onEmailChange=(event)=>{this.setState({SignInEmail:event.target.value}) }
+    onEmailChange=(event)=>{this.setState({SignInEmail:event.target.value}) };
 
-    onPasswordChange=(event)=>{this.setState({SignInPassword:event.target.value})}
+    onPasswordChange=(event)=>{this.setState({SignInPassword:event.target.value})};
 
-    onSubmitSignIn = () => {
+    onSubmitSignIn = (event) => {
         fetch('https://smart-brain-api-13.herokuapp.com/signin', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
@@ -28,7 +28,7 @@ class SignIn extends Component{
                     this.props.loadUser(data)     
                 }
             })
-        event.preventDefault()
+        event.preventDefault();
       
     }
     
