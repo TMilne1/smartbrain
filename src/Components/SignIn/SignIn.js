@@ -9,26 +9,34 @@ class SignIn extends Component{
         }
     }
     onEmailChange=(event)=>{this.setState({SignInEmail:event.target.value}) };
-
     onPasswordChange=(event)=>{this.setState({SignInPassword:event.target.value})};
 
     onSubmitSignIn = (event) => {
-        fetch('https://smart-brain-api-13.herokuapp.com/signin', {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: this.state.SignInEmail,
-                password: this.state.SignInPassword
+        try{
+            fetch('https://smart-brain-api-13.herokuapp.com/signin', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: this.state.SignInEmail,
+                    password: this.state.SignInPassword
+                })
             })
-        })
-            .then(resp => resp.json())
-            .then(data => {
-                if(data.id){
-                    this.props.onRouteChange('home'); 
-                    this.props.loadUser(data)     
-                }
-            })
-        event.preventDefault();
+                .then(resp => {
+                    if(resp.status == 400){
+                        alert("Username and password combination not recognized")
+                    }
+                    resp.json()
+                })
+                .then(data => {
+                    if(data.id){
+                        this.props.onRouteChange('home'); 
+                        this.props.loadUser(data)     
+                    }
+                })
+            event.preventDefault();
+        }catch(err){
+            alert("Unable to log in");
+        }
       
     }
     
